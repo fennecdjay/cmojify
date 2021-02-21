@@ -1,4 +1,4 @@
-size_t emojify(char*);
+size_t cmojify(char* in, char *out);
 
 static const char *emojis[][2] = {
         {":admission_tickets:" , "\U0001F39F"},

@@ -12,48 +12,58 @@ static inline const char* get_emoji(const char *buf) {
   }
   return NULL;
 }
-
+/*
 static void fail(const char * base, const size_t len) {
   for(size_t i = 0; i <= len; ++i)
     putc(base[i], stdout);
 }
-
-static size_t parse_emoji(char *str) {
-  const char *base = str;
+*/
+static char* parse_emoji(char *str, char *out, size_t *len) {
+  char *base = str;
+  char *out_base = out;
   ++str;
-  size_t len = 1;
+  *len = 1;
   while(*str) {
     if(*str == ':') {
       const char *found = get_emoji(base);
-      if(found)
-        printf(found);
-      else
-        fail(base, len);
-      return len;
+      if(found) {
+        *len += strlen(found);
+        strcpy(out, found);
+      }
+      return out;
     } else if(!(isalnum(*str) || *str == '_')) {
-      fail(base, len);
-      return len;
+//      fail(base, len);
+      return out_base;
     }
     ++str;
-    ++len;
+    (*len)++;
+    ++out;
   }
-  return len;
+  return out_base;
 }
 
-void run(char *str) {
+void cmojify(char *str, char *buf) {
+  size_t len;
   while(*str) {
-    if(*str == ':')
-      str += parse_emoji(str);
-    else
-      putc(*str, stdout);
+    if(*str == ':') {
+      const char *out = parse_emoji(str, buf, &len);
+      strcpy(buf, out);
+      str += len;
+      buf += len;
+    } else
+      *buf = *str;
     ++str;
+    ++buf;
   }
 }
 
 #ifdef TEST_CMOJIFY
 int main(int argc, char **argv) {
-  for(int i = 1; i < argc; ++i)
-    run(argv[i]);
+  for(int i = 1; i < argc; ++i) {
+    char out[strlen(argv[i]) + 1];
+    cmojify(argv[i], out);
+    puts(out);
+  }
   return 0;
 }
 #endif
