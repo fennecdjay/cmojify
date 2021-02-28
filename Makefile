@@ -12,7 +12,7 @@ endif
 cmojify: cmojify.c
 	cc -DTEST_CMOJIFY -Wall -Wextra -flto -Ofast $< -o cmojify
 
-libcmojify.a: cmojify.o
+libcmojify.a: lib.o
 	${AR} ${AR_OPT}
 
 clean:
