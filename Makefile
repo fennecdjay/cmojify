@@ -1,5 +1,6 @@
 obj := $(src:.c=.o)
 
+CFLAGS += -fPIC
 # OsX compatibility
 ifeq ($(shell uname), Darwin)
 AR = /usr/bin/libtool
@@ -16,4 +17,4 @@ libcmojify.a: lib.o
 	${AR} ${AR_OPT}
 
 clean:
-	rm -f cmojify.o cmojify libcmojify.a
+	rm -f cmojify.o cmojify libcmojify.a lib.o
