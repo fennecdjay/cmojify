@@ -26,8 +26,8 @@ jobs:
 
     - name: Prepare
       run: |
-        strip ./cmojify
-        7z a cmojify-nightly.zip ./cmojify
+        strip ./cmojify*
+        7z a cmojify-nightly.zip ./cmojify*
 
     - name: Set tag
       if: ${{ matrix.os == 'ubuntu-latest' }}
