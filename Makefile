@@ -11,7 +11,7 @@ AR_OPT = rcs $@ $^
 endif
 
 cmojify: cmojify.c
-	cc -DTEST_CMOJIFY -Wall -Wextra -flto -Ofast $< -o cmojify
+	${CC} -DTEST_CMOJIFY -Wall -Wextra -flto -Ofast $< -o cmojify
 
 libcmojify.a: lib.o
 	${AR} ${AR_OPT}
