@@ -25,9 +25,16 @@ jobs:
       run: make
 
     - name: Prepare
+      if: ${{ matrix.os != 'windows-latest' }}
       run: |
-        strip ./cmojify*
-        7z a cmojify-nightly.zip ./cmojify*
+        strip ./cmojify
+        7z a cmojify-nightly.zip ./cmojify
+
+    - name: Prepare
+      if: ${{ matrix.os == 'windows-latest' }}
+      run: |
+        strip ./cmojify.exe
+        7z a cmojify-nightly.zip ./cmojify.exe
 
     - name: Set tag
       if: ${{ matrix.os == 'ubuntu-latest' }}
