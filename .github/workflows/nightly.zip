@@ -1,0 +1,50 @@
+name: Nightly
+
+on:
+  push:
+    branches:    
+    - 'master'
+
+jobs:
+  build:
+    name: Nightly Release
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+    env:
+      CC: gcc
+    runs-on: ${{ matrix.os }}
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+
+    steps:
+    - name: clone
+      uses: actions/checkout@v2
+
+    - name: Build
+      run: make
+
+    - name: Prepare
+      run: |
+        strip ./cmojify
+        7z a cmojify-nightly.zip ./cmojify
+
+    - name: Set tag
+      if: ${{ matrix.os == 'ubuntu-latest' }}
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git tag -f -a nightly -m "Nightly update"
+        git push origin -f --follow-tags nightly
+
+    - name: Deploy release
+      uses: WebFreak001/deploy-nightly@v1.1.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: https://uploads.github.com/repos/fennecdjay/cmojify/releases/39014190/assets{?name,label}
+        release_id: 39014190
+        asset_path: ./cmojify-nightly.zip
+        asset_name: cmojify-nightly-${{matrix.os}}-$$.zip
+        asset_content_type: application/zip
+        max_releases: 1
