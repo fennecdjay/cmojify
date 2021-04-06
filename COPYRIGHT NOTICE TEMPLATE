@@ -1,5 +1,5 @@
-// cmojify: cmojify.h
-// Copyright (C) 2021 Ethan Uppal
+// <filename relative to cmojify/>
+// Copyright (C) <year> <name>
 //
 // This file is part of cmojify.
 //
@@ -15,12 +15,3 @@
 //
 // You should have received a copy of the GNU Lesser General Public License
 // along with cmojify.  If not, see <https://www.gnu.org/licenses/>.
-
-#ifndef _CMOJIFY_H
-#define _CMOJIFY_H
-
-#include <stddef.h>
-
-void cmojify(char* out, size_t n, const char* in);
-
-#endif /* _CMOJIFY_H */
