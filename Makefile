@@ -1,6 +1,9 @@
 obj := $(src:.c=.o)
 
 CFLAGS += -fPIC
+WARNINGS = -Wall -Wextra -std=c99 -Wpedantic -O2 -I.
+CFLAGS += ${WARNINGS}
+
 # OsX compatibility
 ifeq ($(shell uname), Darwin)
 AR = /usr/bin/libtool
@@ -10,11 +13,11 @@ AR = ar
 AR_OPT = rcs $@ $^
 endif
 
-cmojify: cmojify.c
-	${CC} -DTEST_CMOJIFY -Wall -Wextra -flto -Ofast $< -o cmojify
-
-libcmojify.a: lib.o
+libcmojify.a: cmojify.o
 	${AR} ${AR_OPT}
 
+cmojify.o: cmojify.c cmojify.h internal/emoji-map.h
+	${CC} ${CFLAGS} -c cmojify.c
+
 clean:
-	rm -f cmojify.o cmojify libcmojify.a lib.o
+	rm -f cmojify.o cmojify libcmojify.a
