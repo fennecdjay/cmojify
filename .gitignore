@@ -1,4 +1,6 @@
-
+# We don't need object and library files in the repo
 *.o
-file
+*.a
+
+# Test program generated
 test
